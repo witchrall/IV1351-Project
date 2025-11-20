@@ -139,4 +139,6 @@ ALTER TABLE planned_activity ADD CONSTRAINT FK_planned_activity_1 FOREIGN KEY (a
 ALTER TABLE activity_allocation ADD CONSTRAINT FK_activity_allocation_0 FOREIGN KEY (instance_id ,activity_name ) REFERENCES planned_activity (instance_id ,activity_name );
 ALTER TABLE activity_allocation ADD CONSTRAINT FK_activity_allocation_1 FOREIGN KEY (employment_id ) REFERENCES employee (employment_id );
 
+ALTER TABLE employee ALTER COLUMN department_id DROP NOT NULL;
 
+ALTER TABLE department ADD CONSTRAINT FK_department_manager FOREIGN KEY (manager_employment_id) REFERENCES employee (employment_id);
