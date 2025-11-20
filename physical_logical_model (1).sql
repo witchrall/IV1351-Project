@@ -142,3 +142,45 @@ ALTER TABLE activity_allocation ADD CONSTRAINT FK_activity_allocation_1 FOREIGN 
 ALTER TABLE employee ALTER COLUMN department_id DROP NOT NULL;
 
 ALTER TABLE department ADD CONSTRAINT FK_department_manager FOREIGN KEY (manager_employment_id) REFERENCES employee (employment_id);
+
+CREATE OR REPLACE FUNCTION check_teacher_load()
+RETURNS trigger AS
+$$
+DECLARE
+    course_count int;
+    period study_period_type;
+BEGIN
+
+    /*hämtar perioden*/
+    SELECT ci.study_period
+    INTO period
+    FROM course_instance AS ci
+    WHERE NEW.instance_id = ci.instance_id;
+
+    IF period IS NULL THEN
+        RAISE EXCEPTION 'No course instance found for instance_id %', NEW.instance_id;
+    END IF;
+
+    /*räkna antalet unika kursinstanser under studieperioden*/
+
+    SELECT COUNT(DISTINCT ci.instance_id)
+    INTO course_count
+    FROM course_instance AS ci JOIN activity_allocation AS aa
+    ON aa.instance_id = ci.instance_id
+    WHERE aa.employment_id = NEW.employment_id 
+    AND ci.study_period = period;
+
+
+    IF course_count >= 4 THEN
+        RAISE EXCEPTION 'Teacher with ID % is already engaged in the maximum of 4 courses in period %', NEW.employment_id, period;
+    END IF;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER enforce_activity_allocation_max
+BEFORE INSERT OR UPDATE
+ON activity_allocation
+FOR EACH ROW
+EXECUTE FUNCTION check_teacher_load();
