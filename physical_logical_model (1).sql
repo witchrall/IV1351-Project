@@ -148,16 +148,16 @@ RETURNS trigger AS
 $$
 DECLARE
     course_count int;
-    period study_period_type;
+    activity_period study_period_type;
 BEGIN
 
     /*hämtar perioden*/
     SELECT ci.study_period
-    INTO period
+    INTO activity_period
     FROM course_instance AS ci
     WHERE NEW.instance_id = ci.instance_id;
 
-    IF period IS NULL THEN
+    IF activity_period IS NULL THEN
         RAISE EXCEPTION 'No course instance found for instance_id %', NEW.instance_id;
     END IF;
 
@@ -168,11 +168,11 @@ BEGIN
     FROM course_instance AS ci JOIN activity_allocation AS aa
     ON aa.instance_id = ci.instance_id
     WHERE aa.employment_id = NEW.employment_id 
-    AND ci.study_period = period;
+    AND ci.study_period = activity_period;
 
 
     IF course_count >= 4 THEN
-        RAISE EXCEPTION 'Teacher with ID % is already engaged in the maximum of 4 courses in period %', NEW.employment_id, period;
+        RAISE EXCEPTION 'Teacher with ID % is already engaged in the maximum of 4 courses in period %', NEW.employment_id, activity_period;
     END IF;
 
     RETURN NEW;
