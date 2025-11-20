@@ -1,4 +1,4 @@
-CREATE TYPE ENUM AS ENUM ('P1', 'P2', 'P3', 'P4');
+CREATE TYPE study_period_type AS ENUM ('P1', 'P2', 'P3', 'P4');
 
 CREATE TABLE course_layout (
  course_layout_id INT GENERATED ALWAYS AS IDENTITY  NOT NULL,
@@ -51,7 +51,7 @@ ALTER TABLE teaching_activity ADD CONSTRAINT PK_teaching_activity PRIMARY KEY (a
 
 
 CREATE TABLE course_credits (
- study_period ENUM NOT NULL,
+ study_period study_period_type NOT NULL,
  course_layout_id INT NOT NULL,
  hp DECIMAL(3,1) NOT NULL
 );
@@ -62,7 +62,7 @@ ALTER TABLE course_credits ADD CONSTRAINT PK_course_credits PRIMARY KEY (study_p
 CREATE TABLE course_instance (
  instance_id  INT GENERATED ALWAYS AS IDENTITY  NOT NULL,
  num_students INT,
- study_period ENUM NOT NULL,
+ study_period study_period_type NOT NULL,
  start_date DATE NOT NULL,
  course_layout_id INT NOT NULL
 );
