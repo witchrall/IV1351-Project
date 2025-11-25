@@ -130,15 +130,15 @@ ALTER TABLE course_credits ADD CONSTRAINT FK_course_credits_0 FOREIGN KEY (cours
 ALTER TABLE course_instance ADD CONSTRAINT FK_course_instance_0 FOREIGN KEY (course_layout_id) REFERENCES course_layout (course_layout_id);
 
 
-ALTER TABLE employee ADD CONSTRAINT FK_employee_0 FOREIGN KEY (department_id) REFERENCES department (department_id);
-ALTER TABLE employee ADD CONSTRAINT FK_employee_1 FOREIGN KEY (person_id) REFERENCES person (person_id);
+ALTER TABLE employee ADD CONSTRAINT FK_employee_0 FOREIGN KEY (department_id) REFERENCES department (department_id) ON DELETE SET NULL;
+ALTER TABLE employee ADD CONSTRAINT FK_employee_1 FOREIGN KEY (person_id) REFERENCES person (person_id) ON DELETE CASCADE;
 
 
-ALTER TABLE employee_title ADD CONSTRAINT FK_employee_title_0 FOREIGN KEY (employment_id ) REFERENCES employee (employment_id );
+ALTER TABLE employee_title ADD CONSTRAINT FK_employee_title_0 FOREIGN KEY (employment_id ) REFERENCES employee (employment_id ) ON DELETE CASCADE;
 
 
-ALTER TABLE person_phone ADD CONSTRAINT FK_person_phone_0 FOREIGN KEY (person_id) REFERENCES person (person_id);
-ALTER TABLE person_phone ADD CONSTRAINT FK_person_phone_1 FOREIGN KEY (phone_id) REFERENCES phone (phone_id);
+ALTER TABLE person_phone ADD CONSTRAINT FK_person_phone_0 FOREIGN KEY (person_id) REFERENCES person (person_id) ON DELETE CASCADE;
+ALTER TABLE person_phone ADD CONSTRAINT FK_person_phone_1 FOREIGN KEY (phone_id) REFERENCES phone (phone_id) ON DELETE CASCADE;
 
 
 ALTER TABLE planned_activity ADD CONSTRAINT FK_planned_activity_0 FOREIGN KEY (instance_id ) REFERENCES course_instance (instance_id );
@@ -146,9 +146,9 @@ ALTER TABLE planned_activity ADD CONSTRAINT FK_planned_activity_1 FOREIGN KEY (a
 
 
 ALTER TABLE activity_allocation ADD CONSTRAINT FK_activity_allocation_0 FOREIGN KEY (instance_id ,activity_name ) REFERENCES planned_activity (instance_id ,activity_name );
-ALTER TABLE activity_allocation ADD CONSTRAINT FK_activity_allocation_1 FOREIGN KEY (employment_id ) REFERENCES employee (employment_id );
+ALTER TABLE activity_allocation ADD CONSTRAINT FK_activity_allocation_1 FOREIGN KEY (employment_id ) REFERENCES employee (employment_id ) ON DELETE CASCADE;
 
-ALTER TABLE department ADD CONSTRAINT FK_department_manager FOREIGN KEY (manager_employment_id) REFERENCES employee (employment_id);
+ALTER TABLE department ADD CONSTRAINT FK_department_manager FOREIGN KEY (manager_employment_id) REFERENCES employee (employment_id) ON DELETE SET NULL;
 
 
 CREATE OR REPLACE FUNCTION check_teacher_load()
