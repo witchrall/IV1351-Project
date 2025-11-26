@@ -2,8 +2,8 @@ CREATE VIEW planned_hours AS
 WITH calculated_hours AS (
     SELECT 
         cl.course_code AS "Course Code",
-        ROUND(AVG(ci.instance_id), 0) AS "Course Instance ID",
-        ROUND(AVG(cc.hp),0) AS "HP",
+        ci.instance_id AS "Course Instance ID",
+        cc.hp AS "HP",
         cc.study_period AS "Period",
         SUM(ci.num_students) AS "#Students",
         
@@ -33,7 +33,7 @@ WITH calculated_hours AS (
     LEFT JOIN planned_activity pa ON pa.instance_id = ci.instance_id
     LEFT JOIN teaching_activity ta ON ta.activity_name = pa.activity_name
     WHERE EXTRACT(YEAR FROM ci.start_date) = EXTRACT(YEAR FROM CURRENT_DATE)
-    GROUP BY cl.course_code, cc.study_period
+    GROUP BY cl.course_code, cc.study_period, ci.instance_id, cc.hp
 )
 SELECT
     "Course Code",
