@@ -1,3 +1,4 @@
+CREATE VIEW planned_hours AS 
 WITH calculated_hours AS (
     SELECT 
         cl.course_code AS "Course Code",
