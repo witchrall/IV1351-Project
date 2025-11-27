@@ -1,4 +1,4 @@
-
+/* SEM2 view2 */
  CREATE VIEW allocated_hours AS
  WITH allocated_per_teacher AS (
          SELECT cl.course_code AS "Course Code",

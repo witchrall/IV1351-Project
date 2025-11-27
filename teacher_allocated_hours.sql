@@ -1,4 +1,4 @@
-/*view 3*/
+/*SEM2 view3 */
 CREATE VIEW teacher_allocated_hours AS 
 WITH teacher_allocation AS (
 SELECT 

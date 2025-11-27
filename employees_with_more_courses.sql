@@ -1,4 +1,4 @@
-/*view 4*/
+/*SEM2 view4 */
 CREATE VIEW employees_with_more_courses AS 
 WITH  multiple_courses AS(
 SELECT 
