@@ -1,4 +1,4 @@
-Result of explain analyse after creating the indexes created in the indexes.sql
+Result of explain analyse after creating the indexes named in the indexes.sql file
 
 ::::::::::::::::::::::::::    View1. :::::::::::::::::::::::::::::
 

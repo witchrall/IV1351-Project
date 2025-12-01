@@ -15,3 +15,4 @@ ON employee(person_id);
 
 CREATE INDEX course_layout_id_index
 ON course_instance(course_layout_id);
+
