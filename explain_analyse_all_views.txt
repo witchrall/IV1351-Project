@@ -1,4 +1,6 @@
 
+Result of explain analyse for all the 4 views created without indexing and without materialization
+
 :::::::::::::::::::::::   View1 :::::::::::::::::::::::::::::::
 
 "Subquery Scan on calculated_hours  (cost=106.30..106.40 rows=1 width=370) (actual time=1.294..1.342 rows=17.00 loops=1)"
