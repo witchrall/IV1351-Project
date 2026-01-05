@@ -230,7 +230,7 @@ FROM multiple_courses
 ORDER BY "Employment ID";
 
 /*SEM2 view4 materialized example */
-CREATE MATERIALIZED VIEW employees_with_more_courses AS 
+CREATE MATERIALIZED VIEW mat_employees_with_more_courses AS 
 WITH  multiple_courses AS(
 SELECT 
 	  emp.employment_id AS "Employment ID",
