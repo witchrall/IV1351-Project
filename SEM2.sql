@@ -70,7 +70,7 @@ SELECT
     "Seminar Hours",
     "Admin",
     "Exam",
-    "Lecture Hours" + "Tutorial Hours" + "Lab Hours" + "Seminar Hours" + "Admin" AS "Total Calculated Hours"
+    "Lecture Hours" + "Tutorial Hours" + "Lab Hours" + "Seminar Hours" + "Admin" + "Exam" AS "Total Calculated Hours"
 FROM calculated_hours
 ORDER BY "Course Code";
 
@@ -128,7 +128,7 @@ ORDER BY "Course Code";
              JOIN activity_allocation aa ON aa.instance_id = ci.instance_id
              JOIN employee emp ON aa.employment_id = emp.employment_id
              JOIN person per ON emp.person_id = per.person_id
-          WHERE EXTRACT(year FROM ci.start_date) = EXTRACT(year FROM CURRENT_DATE)
+          WHERE EXTRACT(year FROM ci.start_date) = EXTRACT(year FROM CURRENT_DATE) /* as we are now in 2026 now the right side should be 2025 instead of EXTRACT(year FROM CURRENT_DATE) to see the results, as there are no data in our database for 2026*/
         )
 SELECT 
     "Course Code",
@@ -140,7 +140,7 @@ SELECT
     "Seminar Hours",
     "Admin",
     "Exam",
-    ("Lecture Hours" + "Tutorial Hours" + "Lab Hours" + "Seminar Hours" + "Admin") AS "Total Calculated Hours"
+    ("Lecture Hours" + "Tutorial Hours" + "Lab Hours" + "Seminar Hours" + "Admin" + "Exam") AS "Total Calculated Hours"
 FROM allocated_per_teacher
 ORDER BY "Course Code";
 
@@ -177,7 +177,7 @@ JOIN planned_activity AS pa ON ci.instance_id = pa.instance_id AND aa.activity_n
 JOIN teaching_activity AS ta ON ta.activity_name = pa.activity_name
 JOIN employee AS emp ON aa.employment_id = emp.employment_id
 JOIN person as per ON emp.person_id = per.person_id
-WHERE EXTRACT(YEAR FROM ci.start_date) = EXTRACT(YEAR FROM CURRENT_DATE)
+WHERE EXTRACT(YEAR FROM ci.start_date) = EXTRACT(YEAR FROM CURRENT_DATE) /* as we are now in 2026 now the right side should be 2025 instead of EXTRACT(year FROM CURRENT_DATE) to see the results, as there are no data in our database for 2026*/
 GROUP BY "Course Code","Course Instance ID", "HP", "Period", "Teacher's Name"
 
 )
@@ -193,7 +193,7 @@ SELECT
     "Seminar Hours",
     "Admin",
 	"Exam",
-    ("Lecture Hours" + "Tutorial Hours" + "Lab Hours" + "Seminar Hours" + "Admin") AS "Total Calculated Hours"
+    ("Lecture Hours" + "Tutorial Hours" + "Lab Hours" + "Seminar Hours" + "Admin" + "Exam") AS "Total Calculated Hours"
 FROM teacher_allocation
 ORDER BY "Course Code";
 
@@ -217,7 +217,7 @@ JOIN planned_activity AS pa ON ci.instance_id = pa.instance_id AND aa.activity_n
 JOIN teaching_activity AS ta ON ta.activity_name = pa.activity_name
 JOIN employee AS emp ON aa.employment_id = emp.employment_id
 JOIN person as per ON emp.person_id = per.person_id
-WHERE EXTRACT(YEAR FROM ci.start_date) = EXTRACT(YEAR FROM CURRENT_DATE) AND ci.study_period :: text = ( 'P' || (((EXTRACT(MONTH FROM CURRENT_DATE)::int - 1)/3) + 1))::text
+WHERE EXTRACT(YEAR FROM ci.start_date) = EXTRACT(YEAR FROM CURRENT_DATE) AND ci.study_period :: text = ( 'P' || (((EXTRACT(MONTH FROM CURRENT_DATE)::int - 1)/3) + 1))::text /* as we are now in 2026 now the right side should be 2025 instead of EXTRACT(year FROM CURRENT_DATE) to see the results, as there are no data in our database for 2026*/
 GROUP BY "Employment ID", "Teachers Name", "Period"
 )
 
@@ -247,7 +247,7 @@ JOIN planned_activity AS pa ON ci.instance_id = pa.instance_id AND aa.activity_n
 JOIN teaching_activity AS ta ON ta.activity_name = pa.activity_name
 JOIN employee AS emp ON aa.employment_id = emp.employment_id
 JOIN person as per ON emp.person_id = per.person_id
-WHERE EXTRACT(YEAR FROM ci.start_date) = EXTRACT(YEAR FROM CURRENT_DATE) AND ci.study_period :: text = ( 'P' || (((EXTRACT(MONTH FROM CURRENT_DATE)::int - 1)/3) + 1))::text
+WHERE EXTRACT(YEAR FROM ci.start_date) = EXTRACT(YEAR FROM CURRENT_DATE) AND ci.study_period :: text = ( 'P' || (((EXTRACT(MONTH FROM CURRENT_DATE)::int - 1)/3) + 1))::text /* as we are now in 2026 now the right side should be 2025 instead of EXTRACT(year FROM CURRENT_DATE) to see the results, as there are no data in our database for 2026*/
 GROUP BY "Employment ID", "Teachers Name", "Period"
 )
 
