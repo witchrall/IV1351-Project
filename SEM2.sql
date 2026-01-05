@@ -135,6 +135,7 @@ SELECT
     "Course Instance ID",
     "HP",
     "Teacher's Name",
+    "Tutorial Hours",
     "Lecture Hours",
     "Lab Hours",
     "Seminar Hours",
