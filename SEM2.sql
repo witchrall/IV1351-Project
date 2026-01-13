@@ -86,7 +86,7 @@ WITH allocated_per_teacher AS (
         concat(per.first_name, ' ', per.last_name) AS "Teacher's Name",
         SUM(
             CASE
-                WHEN pa.activity_name::text = 'Lecture'::text THEN pa.planned_hours
+                WHEN pa.activity_name::text = 'Lecture'::text THEN aa.allocated_hours
                 ELSE 0::numeric
             END
         ) * (
@@ -96,7 +96,7 @@ WITH allocated_per_teacher AS (
         ) AS "Lecture Hours",
         SUM(
             CASE
-                WHEN pa.activity_name::text = 'Tutorial'::text THEN pa.planned_hours
+                WHEN pa.activity_name::text = 'Tutorial'::text THEN aa.allocated_hours
                 ELSE 0::numeric
             END
         ) * (
@@ -106,7 +106,7 @@ WITH allocated_per_teacher AS (
         ) AS "Tutorial Hours",
         SUM(
             CASE
-                WHEN pa.activity_name::text = 'Lab'::text THEN pa.planned_hours
+                WHEN pa.activity_name::text = 'Lab'::text THEN aa.allocated_hours
                 ELSE 0::numeric
             END
         ) * (
@@ -116,7 +116,7 @@ WITH allocated_per_teacher AS (
         ) AS "Lab Hours",
         SUM(
             CASE
-                WHEN pa.activity_name::text = 'Seminar'::text THEN pa.planned_hours
+                WHEN pa.activity_name::text = 'Seminar'::text THEN aa.allocated_hours
                 ELSE 0::numeric
             END
         ) * (
@@ -126,7 +126,7 @@ WITH allocated_per_teacher AS (
         ) AS "Seminar Hours",
         SUM(
             CASE
-                WHEN pa.activity_name::text = 'Administration'::text THEN pa.planned_hours
+                WHEN pa.activity_name::text = 'Administration'::text THEN aa.allocated_hours
                 ELSE 0::numeric
             END
         ) * (
@@ -136,7 +136,7 @@ WITH allocated_per_teacher AS (
         ) AS "Admin",
         SUM(
             CASE
-                WHEN pa.activity_name::text = 'Examination'::text THEN pa.planned_hours
+                WHEN pa.activity_name::text = 'Examination'::text THEN aa.allocated_hours
                 ELSE 0::numeric
             END
         ) * (
@@ -202,17 +202,17 @@ SELECT
 	ci.study_period AS "Period",
 	CONCAT(per.first_name, ' ' , per.last_name) AS "Teacher's Name",
 	SUM(CASE WHEN pa.activity_name = 'Lecture'
-	         THEN pa.planned_hours * ta.factor ELSE 0 END) AS "Lecture Hours",
+	         THEN aa.allocated_hours * ta.factor ELSE 0 END) AS "Lecture Hours",
 	SUM(CASE WHEN pa.activity_name = 'Tutorial'
-	         THEN pa.planned_hours * ta.factor ELSE 0 END) AS "Tutorial Hours",
+	         THEN aa.allocated_hours * ta.factor ELSE 0 END) AS "Tutorial Hours",
 	SUM(CASE WHEN pa.activity_name = 'Lab'
-	         THEN pa.planned_hours * ta.factor ELSE 0 END) AS "Lab Hours",
+	         THEN aa.allocated_hours * ta.factor ELSE 0 END) AS "Lab Hours",
 	SUM(CASE WHEN pa.activity_name = 'Seminar'
-	         THEN pa.planned_hours * ta.factor ELSE 0 END) AS "Seminar Hours",
+	         THEN aa.allocated_hours * ta.factor ELSE 0 END) AS "Seminar Hours",
 	SUM(CASE WHEN pa.activity_name = 'Administration'
-	         THEN pa.planned_hours * ta.factor ELSE 0 END) AS "Admin",
+	         THEN aa.allocated_hours * ta.factor ELSE 0 END) AS "Admin",
 	SUM(CASE WHEN pa.activity_name = 'Examination'
-	         THEN pa.planned_hours * ta.factor ELSE 0 END) AS "Exam"
+	         THEN aa.allocated_hours * ta.factor ELSE 0 END) AS "Exam"
 
 
 FROM course_instance AS ci
@@ -224,7 +224,7 @@ JOIN planned_activity AS pa ON ci.instance_id = pa.instance_id AND aa.activity_n
 JOIN teaching_activity AS ta ON ta.activity_name = pa.activity_name
 JOIN employee AS emp ON aa.employment_id = emp.employment_id
 JOIN person as per ON emp.person_id = per.person_id
-WHERE EXTRACT(YEAR FROM ci.start_date) = EXTRACT(YEAR FROM CURRENT_DATE) /* as we are now in 2026 now the right side should be 2025 instead of EXTRACT(year FROM CURRENT_DATE) to see the results, as there are no data in our database for 2026*/
+WHERE EXTRACT(YEAR FROM ci.start_date) = 2025 /* as we are now in 2026 now the right side should be 2025 instead of EXTRACT(year FROM CURRENT_DATE) to see the results, as there are no data in our database for 2026*/
 GROUP BY "Course Code","Course Instance ID", "HP", "Period", "Teacher's Name"
 
 )
